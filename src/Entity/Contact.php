@@ -37,6 +37,11 @@ class Contact
      */
     private $businessDepartment;
 
+    /**
+     * @ORM\Column(type="string", length=60)
+     */
+    private $email;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Contact
     public function setBusinessDepartment(?BusinessDepartment $businessDepartment): self
     {
         $this->businessDepartment = $businessDepartment;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }

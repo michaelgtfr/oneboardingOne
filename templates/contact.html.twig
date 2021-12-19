@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="contact-form container">
+        <div class="row">
+            {{ form_start(contactForm) }}
+            <div class="col-sm-12 p-3">
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{ form_row(contactForm.name) }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form_row(contactForm.firstName) }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form_row(contactForm.email) }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{ form_row(contactForm.businessDepartment) }}
+                    </div>
+                    <div class="col-sm-12">
+                        {{ form_row(contactForm.message) }}
+                    </div>
+                    <div class="col-sm-12 text-center p-3">
+                        <button type="submit" class="btn btn-warning">Valider</button>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(contactForm) }}
+        </div>
+    </section>
+{% endblock %}
