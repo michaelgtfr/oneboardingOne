@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ContactRepository::class)
@@ -19,26 +20,35 @@ class Contact
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Type("string")
+     * @Assert\Length(max=50)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Type("string")
+     * @Assert\Length(max=50)
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(max=255)
      */
     private $message;
 
     /**
      * @ORM\ManyToOne(targetEntity=BusinessDepartment::class, inversedBy="contacts")
+     * @Assert\Type("object")
      */
     private $businessDepartment;
 
     /**
      * @ORM\Column(type="string", length=60)
+     * @Assert\Length(max=60)
+     * @Assert\Email()
      */
     private $email;
 
@@ -54,7 +64,8 @@ class Contact
 
     public function setName(string $name): self
     {
-        $this->name = $name;
+        //Protection against the faults XSS
+        $this->name = filter_var($name, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -66,7 +77,7 @@ class Contact
 
     public function setFirstName(string $firstName): self
     {
-        $this->firstName = $firstName;
+        $this->firstName = filter_var($firstName, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -78,7 +89,7 @@ class Contact
 
     public function setMessage(string $message): self
     {
-        $this->message = $message;
+        $this->message = filter_var($message, FILTER_SANITIZE_STRING);
 
         return $this;
     }
@@ -102,7 +113,7 @@ class Contact
 
     public function setEmail(string $email): self
     {
-        $this->email = $email;
+        $this->email = filter_var($email, FILTER_SANITIZE_STRING);
 
         return $this;
     }
