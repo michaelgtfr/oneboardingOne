@@ -10,10 +10,17 @@ namespace App\Mailer;
 
 
 use App\Entity\Contact;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 
-class AppMailer
+/**
+ * Contains the configuration for send a contact mailer
+ *
+ * Class ContactMailer
+ * @package App\Mailer
+ */
+class ContactMailer
 {
     protected $mailer;
 
@@ -22,19 +29,19 @@ class AppMailer
         $this->mailer = $mailer;
     }
 
-    public function contactMailer($form, $to, Contact $contact)
+    public function contactMailer(Contact $contact)
     {
         $email = (new TemplatedEmail())
-            ->From($form)
-            ->to($to)
-            ->subject('Nouveau message de '. $contact->getUsername())
+            ->From($contact->getEmail())
+            ->to($contact->getBusinessDepartment()->getEmail())
+            ->subject('Nouveau message de '. $contact->getName())
             ->htmlTemplate('mailer/contactMailer.html.twig')
             ->context([
                 'contact' => $contact,
             ])
         ;
         try {
-            $mailer->send($email);
+            $this->mailer->send($email);
         } catch (TransportExceptionInterface $e) {
             return $e;
         }
