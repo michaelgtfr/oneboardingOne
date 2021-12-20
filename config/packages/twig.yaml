@@ -4,3 +4,7 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
+
+    paths:
+        # point this wherever your picture files
+        '%kernel.project_dir%/public/img': img
