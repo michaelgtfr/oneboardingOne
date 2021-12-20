@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+        <title>message de contact</title>
+        <style>
+            .navbar-light, footer {
+                background-color: #2b0245;
+            }
+            .navbar-light a {
+                color: white;
+                font-size: 20px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <nav class="navbar navbar-light">
+                <div class="container-fluid">
+                    <a href="#">
+                        <img src="{{ email.image('@img/logo.png') }}" alt="logo" width="30" height="24" class="d-inline-block align-text-top">
+                        OnboardingOne
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <section class="container p-5">
+            <p>Message de la part de {{ contact.name }}</p>
+
+            <p>Prénom: {{ contact.firstName }}</p>
+            <p>Email: {{ contact.email }}</p>
+            <p>Message: {{ contact.message }}</p>
+
+            <p>Envoyé au Département: {{ contact.businessDepartment.nameDepartment }}</p>
+        </section>
+    </body>
+</html>
