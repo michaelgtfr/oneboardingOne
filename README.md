@@ -30,7 +30,6 @@ Go to the root folder of the site.
 In the root folder right click the mouse and then press git bash (or equivalent software). 
 Open software write ` composer install` . The libraries will be installed automatically in a vendor folder.
 
-
 ## Use
 ### Creation of the database
 
