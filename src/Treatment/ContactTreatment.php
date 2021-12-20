@@ -12,6 +12,7 @@ namespace App\Treatment;
 use App\Mailer\ContactMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Class ContactTreatment
@@ -22,12 +23,15 @@ class ContactTreatment
     protected $em;
     protected $session;
     protected $contactMailer;
+    protected $validator;
 
-    public function __construct(EntityManagerInterface $em,  SessionInterface $session, ContactMailer $contactMailer)
+    public function __construct(EntityManagerInterface $em,  SessionInterface $session, ContactMailer $contactMailer,
+        ValidatorInterface $validator)
     {
         $this->em = $em;
         $this->session = $session;
         $this->contactMailer = $contactMailer;
+        $this->validator = $validator;
     }
 
     /**
@@ -37,17 +41,22 @@ class ContactTreatment
     public function treatment($contact)
     {
         try {
-            $this->em->persist($contact);
-            $this->em->flush();
+            $errors = $this->validator->validate($contact);
+
+            if (count($errors) == 0) {
+                $this->em->persist($contact);
+                $this->em->flush();
 
 
-            $mailerSend = $this->contactMailer->contactMailer($contact);
+                $mailerSend = $this->contactMailer->contactMailer($contact);
 
 
-            if ($mailerSend) {
-                $this->flashBagSuccess();
-                return;
+                if ($mailerSend) {
+                    $this->flashBagSuccess();
+                    return;
+                }
             }
+            $this->flashBagError();
 
         } catch (\Exception $e) {
             $this->flashBagError();
