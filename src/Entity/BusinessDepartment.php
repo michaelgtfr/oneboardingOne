@@ -6,6 +6,7 @@ use App\Repository\BusinessDepartmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BusinessDepartmentRepository::class)
@@ -20,17 +21,21 @@ class BusinessDepartment
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @ORM\Column(type="string", length=60).
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Type("string")
+     * @Assert\Length(max=50)
      */
     private $nameDepartment;
 
     /**
      * @ORM\OneToMany(targetEntity=Contact::class, mappedBy="businessDepartment")
+     * @Assert\Type("object")
      */
     private $contacts;
 
