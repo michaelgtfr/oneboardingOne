@@ -1,5 +1,6 @@
 # OneboardingOne
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/699306ef063444d0b796cf5bc920ab53)](https://www.codacy.com/gh/michaelgtfr/oneboardingOne/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=michaelgtfr/oneboardingOne&amp;utm_campaign=Badge_Grade)  
 Link for the backlog on Trello: https://trello.com/b/raJCNe30
 
 ## Context 
