@@ -14,9 +14,9 @@ Order:
 ## Installation 
 ### Prerequisites
 
-- PHP 7.1 min.    
-- Knowing how to use Symfony 4 and this libraries.    
-- MySQL 8.0.    
+  - PHP 7.1 min.    
+  - Knowing how to use Symfony 4 and this libraries.    
+  - MySQL 8.0.    
 
 ### Recover the Application
 
