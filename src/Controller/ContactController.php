@@ -11,30 +11,41 @@ namespace App\Controller;
 
 use App\Entity\Contact;
 use App\Form\ContactForm;
-use App\Treatment\ContactTreatment;
+use App\Mailer\ContactMailer;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig\Environment;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ContactController
+class ContactController extends AbstractController
 {
+    protected $em;
+    protected $session;
+    protected $contactMailer;
+    protected $validator;
+
+    public function __construct(EntityManagerInterface $em,  SessionInterface $session, ContactMailer $contactMailer,
+                                ValidatorInterface $validator)
+    {
+        $this->em = $em;
+        $this->session = $session;
+        $this->contactMailer = $contactMailer;
+        $this->validator = $validator;
+    }
+
     /**
      * Page allows of display the contact forms and the treatment the data
      *
      * @Route("/", "app_contact")
      * @param Request $request
-     * @param Environment $twig
      * @param FormFactoryInterface $formFactory
-     * @param ContactTreatment $contactTreatment
      * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
-    public function contactController(Request $request, Environment $twig, FormFactoryInterface $formFactory,
-                                      ContactTreatment $contactTreatment)
+    public function contactController(Request $request, FormFactoryInterface $formFactory)
     {
         $contact = new Contact();
 
@@ -42,12 +53,65 @@ class ContactController
 
         $contactForm->handleRequest($request);
         if ($contactForm->isSubmitted() && $contactForm->isValid()) {
-            $contactTreatment->treatment($contactForm->getData());
+            $this->treatment($contactForm->getData());
         }
-        $render = $twig->render('contact.html.twig', [
+
+        return $this->render('contact.html.twig', [
             'contactForm' => $contactForm->createView(),
         ]);
+    }
 
-        return new Response($render);
+    /**
+     * Save the data of the contact form page and send this data in the personal service email.
+     *
+     * @param $contact
+     */
+    public function treatment($contact)
+    {
+        try {
+            $errors = $this->validator->validate($contact);
+
+            if (count($errors) == 0) {
+                $this->em->persist($contact);
+                $this->em->flush();
+
+                $mailerSend = $this->contactMailer->contactMailer($contact);
+
+                if ($mailerSend) {
+                    $this->flashBagSuccess();
+                    return;
+                }
+            }
+            $this->flashBagError();
+
+        } catch (\Exception $e) {
+            $this->flashBagError();
+        }
+    }
+
+    /**
+     * Display the message if the treatment is a success
+     *
+     * @return mixed
+     */
+    public function flashBagSuccess()
+    {
+        return $this->session->getFlashBag()->add(
+            'success',
+            'Votre email à été envoyé.'
+        );
+    }
+
+    /**
+     * Display the message if the treatment is a failure.
+     *
+     * @return mixed
+     */
+    public function flashBagError()
+    {
+        return $this->session->getFlashBag()->add(
+            'error',
+            "Désoler, mais votre message n'a pas été traité. Veuillez réessayer ultérieurement."
+        );
     }
 }

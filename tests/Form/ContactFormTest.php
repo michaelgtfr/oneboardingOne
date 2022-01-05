@@ -10,43 +10,10 @@ namespace App\Tests\Form;
 
 use App\Entity\Contact;
 use App\Form\ContactForm;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
-use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ContactFormTest extends TypeTestCase
 {
-    private $objectManager;
-
-    protected function setUp(): void
-    {
-        // mock any dependencies
-        $businessMock = $this->createMock(ObjectRepository::class);
-        $businessMock->expects($this->any())
-            ->method('findAll')
-            ->willReturn([]);
-
-
-        $this->objectManager = $this->createMock(EntityManagerInterface::class);
-            $this->objectManager->expects($this->any())
-            ->method('getRepository')
-            ->willReturn($businessMock);
-
-        parent::setUp();
-    }
-
-    protected function getExtensions()
-    {;
-        // create a type instance with the mocked dependencies
-        $type = new ContactForm($this->objectManager);
-
-        return [
-            // register the type instances with the PreloadedExtension
-            new PreloadedExtension([$type], []),
-        ];
-    }
-
     public function testBuildForm()
     {
         $data = [
