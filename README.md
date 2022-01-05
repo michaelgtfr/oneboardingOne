@@ -1,22 +1,24 @@
 # OneboardingOne
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/699306ef063444d0b796cf5bc920ab53)](https://www.codacy.com/gh/michaelgtfr/oneboardingOne/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=michaelgtfr/oneboardingOne&amp;utm_campaign=Badge_Grade)  
 Link for the backlog on Trello: https://trello.com/b/raJCNe30
 
 ## Context 
 
 Order:
-- Install Symfony 4, and create a “Contact Form” page there    
-- Request inputs (last name, first name, email, message) using a Symfony Form and to branch, and save this information each time you send it    
-- Submit in this form, a drop-down list proposing the departments of the company (Management, rh, com, dev, ...), previously registered in the database data via a Fixture class    
-- Each time the contact form is submitted, generate an email containing the information, and send this email to the manager of the chosen department    
-- Put the code on a Github repository    
+
+-   Install Symfony 4, and create a “Contact Form” page there    
+-   Request inputs (last name, first name, email, message) using a Symfony Form and to branch, and save this information each time you send it     
+-   Submit in this form, a drop-down list proposing the departments of the company (Management, rh, com, dev, ...), previously registered in the database data via a Fixture class    
+-   Each time the contact form is submitted, generate an email containing the information, and send this email to the manager of the chosen department    
+-   Put the code on a Github repository     
 
 ## Installation 
 ### Prerequisites
 
-- PHP 7.1 min.    
-- Knowing how to use Symfony 4 and this libraries.    
-- MySQL 8.0.    
+-   PHP 7.1 min.    
+-   Knowing how to use Symfony 4 and this libraries.    
+-   MySQL 8.0.    
 
 ### Recover the Application
 
