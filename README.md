@@ -6,6 +6,7 @@ Link for the backlog on Trello: https://trello.com/b/raJCNe30
 ## Context 
 
 Order:
+
 -   Install Symfony 4, and create a “Contact Form” page there    
 -   Request inputs (last name, first name, email, message) using a Symfony Form and to branch, and save this information each time you send it     
 -   Submit in this form, a drop-down list proposing the departments of the company (Management, rh, com, dev, ...), previously registered in the database data via a Fixture class    
