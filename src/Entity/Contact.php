@@ -2,12 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ContactRepository::class)
+ * @ApiResource(
+ *  collectionOperations={"get", "post"},
+ *  itemOperations={"get"},
+ *  shortName="contact",
+ *  normalizationContext={"groups"={"contact:read"}},
+ *  denormalizationContext={"groups"={"contact:write"}}
+ * )
  */
 class Contact
 {
@@ -15,6 +25,7 @@ class Contact
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"contact:read"})
      */
     private $id;
 
@@ -22,6 +33,7 @@ class Contact
      * @ORM\Column(type="string", length=50)
      * @Assert\Type("string")
      * @Assert\Length(max=50)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $name;
 
@@ -29,6 +41,7 @@ class Contact
      * @ORM\Column(type="string", length=50)
      * @Assert\Type("string")
      * @Assert\Length(max=50)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $firstName;
 
@@ -36,12 +49,14 @@ class Contact
      * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\Length(max=255)
+     * @Groups({"contact:read", "contact:write"})
      */
     private $message;
 
     /**
      * @ORM\ManyToOne(targetEntity=BusinessDepartment::class, inversedBy="contacts")
      * @Assert\Type("object")
+     * @Groups({"contact:read", "contact:write"})
      */
     private $businessDepartment;
 
@@ -49,6 +64,7 @@ class Contact
      * @ORM\Column(type="string", length=60)
      * @Assert\Length(max=60)
      * @Assert\Email()
+     * @Groups({"contact:read", "contact:write"})
      */
     private $email;
 
