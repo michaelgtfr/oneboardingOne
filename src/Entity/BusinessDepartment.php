@@ -2,14 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BusinessDepartmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BusinessDepartmentRepository::class)
+ * @ApiResource(
+ * collectionOperations={"get"},
+ * itemOperations={"get"},
+ * shortName="business_department_list",
+ * normalizationContext={"groups"={"business_department_listing:read"}}
+ * )
  */
 class BusinessDepartment
 {
@@ -17,12 +25,14 @@ class BusinessDepartment
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"business_department_listing:read", "contact:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=60).
      * @Assert\Email()
+     *  @Groups({"contact:read"})
      */
     private $email;
 
@@ -30,6 +40,7 @@ class BusinessDepartment
      * @ORM\Column(type="string", length=50)
      * @Assert\Type("string")
      * @Assert\Length(max=50)
+     * @Groups({"business_department_listing:read", "contact:read"})
      */
     private $nameDepartment;
 
