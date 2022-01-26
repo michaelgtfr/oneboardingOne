@@ -65,6 +65,7 @@ class ContactController extends AbstractController
      * Save the data of the contact form page and send this data in the personal service email.
      *
      * @param $contact
+     * @return
      */
     public function treatment($contact)
     {
@@ -78,40 +79,22 @@ class ContactController extends AbstractController
                 $mailerSend = $this->contactMailer->contactMailer($contact);
 
                 if ($mailerSend) {
-                    $this->flashBagSuccess();
-                    return;
+                    return $this->session->getFlashBag()->add(
+                        'success',
+                        'Votre email à été envoyé.'
+                    );
                 }
             }
-            $this->flashBagError();
+            return $this->session->getFlashBag()->add(
+                'error',
+                "Désoler, mais votre message n'a pas été traité. Veuillez réessayer ultérieurement."
+            );
 
         } catch (\Exception $e) {
-            $this->flashBagError();
+            return $this->session->getFlashBag()->add(
+                'error',
+                "Désoler, mais votre message n'a pas été traité. Veuillez réessayer ultérieurement."
+            );
         }
-    }
-
-    /**
-     * Display the message if the treatment is a success
-     *
-     * @return mixed
-     */
-    public function flashBagSuccess()
-    {
-        return $this->session->getFlashBag()->add(
-            'success',
-            'Votre email à été envoyé.'
-        );
-    }
-
-    /**
-     * Display the message if the treatment is a failure.
-     *
-     * @return mixed
-     */
-    public function flashBagError()
-    {
-        return $this->session->getFlashBag()->add(
-            'error',
-            "Désoler, mais votre message n'a pas été traité. Veuillez réessayer ultérieurement."
-        );
     }
 }
